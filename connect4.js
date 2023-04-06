@@ -17,6 +17,9 @@ class Game {
     this.makeHtmlBoard();
   }
 
+  /** makeBoard: create in-JS board structure:
+ *   board = array of rows, each row is array of cells  (board[y][x])
+ */
   makeBoard() {
     for (let y = 0; y < this.height; y++) {
       this.board.push(Array.from({ length: this.width }));
@@ -27,7 +30,7 @@ class Game {
     const board = document.getElementById('board');
     const top = document.createElement('tr');
     top.setAttribute('id', 'column-top');
-    top.addEventListener('click', this.handleClick);
+    top.addEventListener('click', this.handleClick.bind(this));
 
     for (let x = 0; x < this.width; x++) {
       const headCell = document.createElement('td');
@@ -128,11 +131,7 @@ class Game {
 
 new Game(6,7);
 
- // active player: 1 or 2
 
-/** makeBoard: create in-JS board structure:
- *   board = array of rows, each row is array of cells  (board[y][x])
- */
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
