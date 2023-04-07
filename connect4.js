@@ -1,8 +1,6 @@
 "use strict";
 
 const startGameBtn = document.querySelector('#startGame');
-const player1Color = document.querySelector('#player1')
-const player2Color = document.querySelector('#player2')
 
 /** Connect Four
  *
@@ -12,11 +10,12 @@ const player2Color = document.querySelector('#player2')
  */
 
 class Game {
-  constructor(height = 6, width = 7) {
+  constructor(p1, p2, height = 6, width = 7) {
+    this.players = [p1, p2]
     this.width = width;
     this.height = height;
     this.board = [];
-    this.currPlayer = new Player(color);
+    this.currPlayer = p1;
     this.makeBoard();
     this.makeHtmlBoard();
     this.lockBoard = false;
@@ -71,7 +70,7 @@ class Game {
   placeInTable(y, x) {
     const piece = document.createElement('div');
     piece.classList.add('piece');
-    piece.classList.add(`p${this.currPlayer}`);
+    piece.style.backgroundColor = this.currPlayer.color;
     piece.style.top = -50 * (y + 2);
 
     const spot = document.getElementById(`c-${y}-${x}`);
@@ -102,7 +101,8 @@ class Game {
       return this.endGame('Tie!');
     }
 
-    this.currPlayer = this.currPlayer === 1 ? 2 : 1;
+    this.currPlayer = 
+      this.currPlayer === this.players[0] ? this.players[1] : this.players[0] ;
   }
 
   checkForWin() {
@@ -135,18 +135,19 @@ class Game {
   }
 }
 
-class Player{
-  constructor(color, playerNum){
-    this.playerNum = playerNum;
+class Player {
+  constructor(color){
     this.color = color;
   }
 }
 
 /** init a new Game */
 function startGame(){
-  new Game()
-  new Player(player1Color.value, 1)
-  new Player(player2Color.value, 2)
+  const player1Color = document.querySelector('#player1')
+  const player2Color = document.querySelector('#player2')
+  const player1 = new Player(player1Color.value)
+  const player2 = new Player(player2Color.value)
+  new Game(player1,player2)
 }
 
 startGameBtn.addEventListener('click', startGame)
