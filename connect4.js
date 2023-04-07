@@ -14,8 +14,8 @@ class Game {
     this.players = [p1, p2]
     this.width = width;
     this.height = height;
-    this.board = [];
     this.currPlayer = p1;
+    this.handleClick = this.handleClick.bind(this);
     this.makeBoard();
     this.makeHtmlBoard();
     this.lockBoard = false;
@@ -25,6 +25,7 @@ class Game {
  *   board = array of rows, each row is array of cells  (board[y][x])
  */
   makeBoard() {
+    this.board = [];
     for (let y = 0; y < this.height; y++) {
       this.board.push(Array.from({ length: this.width }));
     }
@@ -35,7 +36,7 @@ class Game {
     board.innerHTML = "";
     const top = document.createElement('tr');
     top.setAttribute('id', 'column-top');
-    top.addEventListener('click', this.handleClick.bind(this));
+    top.addEventListener('click', this.handleClick);
 
     for (let x = 0; x < this.width; x++) {
       const headCell = document.createElement('td');
@@ -106,8 +107,8 @@ class Game {
   }
 
   checkForWin() {
-    function _win(cells) {
-      return cells.every(
+    const _win = cells =>
+      cells.every(
         ([y, x]) =>
           y >= 0 &&
           y < this.height &&
@@ -115,7 +116,6 @@ class Game {
           x < this.width &&
           this.board[y][x] === this.currPlayer
       );
-    }
 
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
@@ -125,11 +125,11 @@ class Game {
         const vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
         const diagDR = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
         const diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
+        
         // find winner (only checking each win-possibility as needed)
-        if (_win.call(this, horiz) || _win.call(this, vert) || _win.call(this, diagDR) || _win.call(this, diagDL)) {
+        if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
           return true;
         }
-        
       }
     }
   }
