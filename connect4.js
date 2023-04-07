@@ -28,6 +28,7 @@ class Game {
 
   makeHtmlBoard() {
     const board = document.getElementById('board');
+    board.innerHTML = "";
     console.log(board)
     const top = document.createElement('tr');
     top.setAttribute('id', 'column-top');
@@ -78,6 +79,7 @@ class Game {
   }
 
   handleClick(evt) {
+    console.log("target id = ", evt.target.id)
     const x = Number(evt.target.id.slice('top-'.length));
 
     const y = this.findSpotForCol(x);
@@ -101,7 +103,6 @@ class Game {
 
   checkForWin() {
     function _win(cells) {
-      console.log(this)
       return cells.every(
         ([y, x]) =>
           y >= 0 &&
@@ -129,7 +130,7 @@ class Game {
   }
 }
 
-// new Game(6,7);
+new Game(6,7);
 
 
 

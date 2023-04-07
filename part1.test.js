@@ -87,7 +87,7 @@ describe('placeInTable', function () {
 describe('handleClick', function () {
 
   it('it switches players', function () {
-    const evt = { target: { id: 0 } };
+    const evt = { target: { id: `top-0` } };
 
     expect(testGame.currPlayer).toEqual(1);
 
@@ -102,7 +102,7 @@ describe('handleClick', function () {
     let y = testGame.height - 1;
     const x = 0;
 
-    const evt = { target: { id: x } };
+    const evt = { target: { id: `top-${x}` } };
 
     // spot on board is empty
     // after one call to handleClick, gets updated with player 1
@@ -125,7 +125,7 @@ describe('handleClick', function () {
     const x = 0;
 
     let spot = document.getElementById(`c-${y}-${x}`);
-    const evt = { target: { id: x } };
+    const evt = { target: { id: `top-${x}` } };
 
     // spot on html board empty
     // after one call to handleClick, gets updated with player 1 piece
