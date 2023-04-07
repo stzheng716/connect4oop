@@ -1,5 +1,9 @@
 "use strict";
 
+const startGameBtn = document.querySelector('#startGame');
+const player1Color = document.querySelector('#player1')
+const player2Color = document.querySelector('#player2')
+
 /** Connect Four
  *
  * Player 1 and 2 alternate turns. On each turn, a piece is dropped down a
@@ -8,13 +12,14 @@
  */
 
 class Game {
-  constructor(height, width) {
+  constructor(height = 6, width = 7) {
     this.width = width;
     this.height = height;
     this.board = [];
-    this.currPlayer = 1;
+    this.currPlayer = new Player(color);
     this.makeBoard();
     this.makeHtmlBoard();
+    this.lockBoard = false;
   }
 
   /** makeBoard: create in-JS board structure:
@@ -29,7 +34,6 @@ class Game {
   makeHtmlBoard() {
     const board = document.getElementById('board');
     board.innerHTML = "";
-    console.log(board)
     const top = document.createElement('tr');
     top.setAttribute('id', 'column-top');
     top.addEventListener('click', this.handleClick.bind(this));
@@ -75,18 +79,18 @@ class Game {
   }
 
   endGame(msg) {
+    this.lockBoard = true;
     alert(msg);
   }
 
   handleClick(evt) {
-    console.log("target id = ", evt.target.id)
+    if(this.lockBoard){return}
     const x = Number(evt.target.id.slice('top-'.length));
 
     const y = this.findSpotForCol(x);
     if (y === null) {
       return;
     }
-    //TODO: remove console.log
     this.board[y][x] = this.currPlayer;
     this.placeInTable(y, x);
 
@@ -125,12 +129,27 @@ class Game {
         if (_win.call(this, horiz) || _win.call(this, vert) || _win.call(this, diagDR) || _win.call(this, diagDL)) {
           return true;
         }
+        
       }
     }
   }
 }
 
-new Game(6,7);
+class Player{
+  constructor(color, playerNum){
+    this.playerNum = playerNum;
+    this.color = color;
+  }
+}
+
+/** init a new Game */
+function startGame(){
+  new Game()
+  new Player(player1Color.value, 1)
+  new Player(player2Color.value, 2)
+}
+
+startGameBtn.addEventListener('click', startGame)
 
 
 
